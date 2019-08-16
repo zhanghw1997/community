@@ -15,7 +15,18 @@
 + git remote add origin https://github.com/19970711/community.git 连接本地仓库到我的远程github地址
 + git push -u origin master  把项目提交到远程的origin的master分支
 
-##工具
+## Github的第三方登录
+[Github登录的参考文档](https://developer.github.com/apps/building-oauth-apps/authorizing-oauth-apps/)
+访问逻辑步骤：
++ 1.用户访问应用
++ 2.用户点击第三方登录
++ 3.请求GET https://github.com/login/oauth/authorize地址
++ 4.Github会根据已经备案的redirect_url的回调地址，携带code返回给码匠社区
++ 5.码匠社区通过POST https://github.com/login/oauth/access_token携带code发送请求给github网站
++ 6.返回access_token给麻将社区
++ 7.码匠社区调用GET https://api.github.com/user传入access_token参数请求github
++ 8.github把user信息返回给码匠社区
++ 9.码匠社区把user信息存入数据库，更新登录状态
++ 10.返回给用户登录状态
 
-## 功能点
 
