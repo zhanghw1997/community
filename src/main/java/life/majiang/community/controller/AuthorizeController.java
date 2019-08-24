@@ -3,7 +3,10 @@ package life.majiang.community.controller;
 
 import life.majiang.community.dto.AccessTokenDTO;
 import life.majiang.community.dto.GithubUser;
+import life.majiang.community.mapper.UserMapper;
+import life.majiang.community.model.User;
 import life.majiang.community.provider.GithubProvider;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -11,6 +14,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.util.UUID;
 
 
 @Slf4j
@@ -31,6 +36,9 @@ public class AuthorizeController {
     @Value("${github.redirect.uri}")
     private String redirectUri;
 
+    @Autowired
+    private UserMapper userMapper;
+
     @GetMapping(value = "/callback")
     public String callBack(@RequestParam("code") String code
                         ,@RequestParam("state") String state){
@@ -42,9 +50,24 @@ public class AuthorizeController {
         accessTokenDTO.setRedirect_uri(redirectUri);
         accessTokenDTO.setState(state);
         String token = githubProvider.getAccessToken(accessTokenDTO);
-        GithubUser user = githubProvider.getUser(token);
-        log.info("获取到的Github的用户信息"+user);
-        return "index";
+        GithubUser githubUser = githubProvider.getUser(token);
+        log.info("获取到的Github的用户信息"+githubUser);
+        if (githubUser == null){
+            log.info("登录失败");
+            return "redirect:/";
+        }else{
+            log.info("登录成功");
+            User user = new User();
+            user.setName(githubUser.getLogin());
+            user.setAccountId(String.valueOf(githubUser.getId()));
+            user.setToken(UUID.randomUUID().toString());
+            user.setUserImage(githubUser.getAvatar_url());
+            user.setCreateTime(System.currentTimeMillis());
+            user.setUpdateTime(System.currentTimeMillis());
+            userMapper.insert(user);
+            return "redirect:/";
+        }
+
     }
 
 
