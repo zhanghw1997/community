@@ -3,13 +3,14 @@ body{
 }
 .main{
     background-color: white;
-    margin: 50px;
-    margin-bottom: 50px;
-    margin-left: 50px;
-    margin-right: 50px;
+    margin: 30px;
 }
 .btn-publish{
     float: right;
     margin-bottom: 15px;
+}
+.row{
+    margin: 30px;
+    background-color: white;
 }
 
