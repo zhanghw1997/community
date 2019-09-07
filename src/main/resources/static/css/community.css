@@ -13,4 +13,9 @@ body{
     margin: 30px;
     background-color: white;
 }
+.text-desc{
+    font-size: 12px;
+    font-weight: normal;
+    color: #999999
+}
 

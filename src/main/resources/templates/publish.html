@@ -16,7 +16,7 @@
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
                 <span class="sr-only">码匠社区</span>
             </button>
-            <a class="navbar-brand" href="#">码匠社区</a>
+            <a class="navbar-brand" href="/">码匠社区</a>
         </div>
 
 
@@ -53,16 +53,19 @@
             <form action="/publish" method="post">
                 <div class="form-group">
                     <label for="title">问题标题(简单扼要)</label>
-                    <input type="text" class="form-control" id="title" name="title" placeholder="问题标题">
+                    <input type="text" class="form-control" id="title" name="title" th:value="${title}" placeholder="问题标题">
                 </div>
                 <div class="form-group">
                     <label for="title">问题补充(必须填写)</label>
-                    <textarea id="descrition" name="descrition" class="form-control"  rows="10" placeholder="问题描述"></textarea>
+                    <textarea id="description" name="description" class="form-control"  rows="10" th:text="${description}" placeholder="问题描述"></textarea>
                 </div>
                 <div class="form-group">
                     <label for="tag">添加标签:</label>
-                    <input type="text" class="form-control" id="tag" name="tag" placeholder="输入标签以逗号分割开">
+                    <input type="text" class="form-control" id="tag" name="tag" th:value="${tag}" placeholder="输入标签以逗号分割开">
                 </div>
+                <span th:if="${error} != null">
+                    <span class="alert alert-danger" th:text="${error}"></span>
+                </span>
                 <button type="submit" class="btn btn-success btn-publish">发布</button>
             </form>
         </div>
